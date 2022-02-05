@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block header %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+
+
+{% block content %}
+
+bonjour tout le monde 
+
+{% endblock %}
+
+
+
+
+{% block filter %}
+
+{% endblock %}
+
+
+
+
+
+
+
+{% block h2 %}
+
+Abonnez svp 
+
+{% endblock %}
+
+
+
+{% block list %}
+
+    {% for element in list %}
+    <li>{{ element }}-------- {{ nom }}</li>
+    {% empty %}
+    <p>Pas d'element </p>
+    {% endfor %}
+
+{% endblock %}
