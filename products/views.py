@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from .models import Products
 from .form import ProductForm, RowProductForm
 
@@ -17,6 +18,26 @@ def productCreate(request):
         form = ProductForm()
         messages = "We have receive your product"
     return render(request, 'products/create.html', {'form':form, 'message':messages}) 
+
+def modifier(request, my_id):
+    obj = Products.objects.get(id=my_id)
+    form = ProductForm(request.POST or None, instance=obj)
+    messages = ''
+    if form.is_valid():
+        form.save()
+        form = ProductForm()
+        messages = "Your modification was succesfully done!"
+    return render(request, 'products/update.html', {'form':form, 'message':messages}) 
+
+def table(request):
+    obj = Products.objects.all()
+    return render(request, 'products/table.html', {'obj':obj})
+
+    
+
+
+
+
 
 
 # def productCreate(request):

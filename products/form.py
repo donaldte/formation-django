@@ -2,7 +2,6 @@ from django import forms
 from .models import Products
 
 class ProductForm(forms.ModelForm):
-    email = forms.EmailField()
     name = forms.CharField(label='', required=False, widget=forms.TextInput(
         attrs={
             'placeholder':'votre nom ici',

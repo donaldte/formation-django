@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.db import models
 
 # Create your models here.
@@ -15,4 +16,9 @@ class Products(models.Model):
         verbose_name_plural =("Products")
 
     def __str__(self):
-        return self.name    
+        return self.name   
+
+    def get_absolute_url(self):
+        return reverse("update", kwargs={"my_id": self.pk})
+    
+    
