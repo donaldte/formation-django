@@ -24,14 +24,7 @@ class ProductForm(forms.ModelForm):
         fields = ('name', 'description', 'price', 'image', 'slug',)
 
 
-    def clean_name(self, *args, **kwargs):
-            name = self.cleaned_data.get('name')
-            if not 'uba' in name:
-                raise forms.ValidationError('le mot uba doit apparaitre daans votre nom')    
-            elif not 'man' in name:
-                raise forms.ValidationError("man doit apparaitre")
-            else:
-                return name
+    
 
     def clean_email(self, *args, **kwargs):
         email = self.cleaned_data.get('email')

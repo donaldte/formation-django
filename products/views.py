@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import Http404
 from django.urls import reverse_lazy
 from .models import Products
 from .form import ProductForm, RowProductForm
@@ -20,18 +21,33 @@ def productCreate(request):
     return render(request, 'products/create.html', {'form':form, 'message':messages}) 
 
 def modifier(request, my_id):
-    obj = Products.objects.get(id=my_id)
+    obj = get_object_or_404(Products, id=my_id)
+    # try:
+    #     obj = Products.objects.get(id=my_id)
+    # except Products.DoesNotExist:
+    #     raise Http404     
     form = ProductForm(request.POST or None, instance=obj)
     messages = ''
     if form.is_valid():
         form.save()
         form = ProductForm()
-        messages = "Your modification was succesfully done!"
+        messages = "Your modification was successfully done!"
     return render(request, 'products/update.html', {'form':form, 'message':messages}) 
 
 def table(request):
     obj = Products.objects.all()
     return render(request, 'products/table.html', {'obj':obj})
+
+
+def deleteProduct(request, my_id):
+    obj = get_object_or_404(Products, id=my_id)
+    name = obj.name
+    if request.method == "POST":
+        obj.delete()
+        return redirect('table')
+
+    return render(request, 'products/delete.html',{"name":name})    
+
 
     
 

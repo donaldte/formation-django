@@ -15,19 +15,14 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
-from products.views import deleteproduct, modifier, product_list, productCreate, table
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', product_list, name='home'),
-    path('create', productCreate, name='create'),
-    path('update/<int:my_id>', modifier, name='update'),
-    path('delete/<int:my_id>', deleteproduct, name='delete'),
-    path('mamager', table, name='table'),
+    path('', include('products.urls')),
    
 ] 
 
