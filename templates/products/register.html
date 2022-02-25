@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% for message in messages %}
+<h1 style="color: green;"> {{ message }}</h1>
+
+
+{% endfor %}
+<center>
+    <form method="post"  action="{% url 'register' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+       {{ form.as_p }}
+
+       <button type="submit">Save</button>
+    </form>
+</center>
+
+
+{% endblock %}
+

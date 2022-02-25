@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for message in messages %}
+<h1 style="color: green;"> {{ message }}</h1>
+
+
+{% endfor %}
+<center>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Entre votre non ">
+        <br><br>
+        <input type="password" name="password" id="" placeholder="Entre votre password">
+        <br><br>
+
+       <button type="submit">Save</button> mot de passe oublie?? click
+       <button type="submit"><a href="/reset_password">reset password</a></button>
+    </form>
+</center>
+
+
+{% endblock %}
