@@ -12,12 +12,40 @@ from django.contrib import messages
 
 from .form import ProductForm, RowProductForm, UserForm
 
-def product_list(request, *args, **kwargs):
-    product = Products.objects.all()
-    context = {
-        'products':product
+
+
+
+
+def base(request):
+    username = request.COOKIES['username']
+    content = {
+        'username':username
     }
-    return render(request, 'products/list.html', context)
+    return  render(request, 'base.html', content)
+   
+    return resp    
+
+@login_required(login_url='login')
+def product_list(request, *args, **kwargs):
+    """
+        This function display list of all the product and credential of the user as cookies 
+    """
+    
+    product = Products.objects.all()
+    number_visit = request.session.get('visit', 0) + 1
+    request.session['visit'] = number_visit
+    if number_visit>4:
+        del(request.session['visit'])
+    context = {
+        'products':product,
+        'number':number_visit
+    }
+    resp = render(request, 'products/list.html', context)
+    username = request.user.username 
+    password = request.user.password
+    resp.set_cookie('username',username)
+    resp.set_cookie('password',password)
+    return resp
 
 def test_email(request):
     if request.user.email.endswith('@donald.com'):
@@ -46,14 +74,17 @@ def connexion(request):
         user = authenticate(request, username=username, password=password)
         if user is not None and user.is_active:
             login(request, user)
-            messages.success(request, 'Bienvenu')
-            return redirect('table')
+            messages.success(request, 'Bienvenue')
+            if 'next' in request.POST:
+                return redirect(request.POST.get('next'))
+            else:    
+                return redirect('/')
         else:
             messages.error(request, "erreur d'authentification ")    
     return render(request, 'products/login.html')
 
 
-@login_required
+@login_required()
 def deconnection(request):
     logout(request)
     return redirect('login')
@@ -94,7 +125,7 @@ def table(request):
     return render(request, 'products/table.html', {'obj':obj})
 
 
-@staff_member_required()
+
 def deleteProduct(request, my_id):
     obj = get_object_or_404(Products, id=my_id)
     name = obj.name
@@ -102,7 +133,10 @@ def deleteProduct(request, my_id):
         obj.delete()
         return redirect('table')
 
-    return render(request, 'products/delete.html',{"name":name})    
+    return render(request, 'products/delete.html',{"name":name})  
+
+
+    
 
 
     
